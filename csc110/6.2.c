@@ -1,3 +1,5 @@
+// shortest remaining time first scheduling (pre-emptive version of SJF) with static data
+
 #include <stdio.h>
 #define INT_MAX 95
 
@@ -7,18 +9,6 @@ typedef struct Process {
     int burst_time;
     int elapsed_time;
 } Process;
-
-void sort_processes(Process processes[], int num_process) {
-    for (int i = 0; i < num_process - 1; i++) {
-        for (int j = 0; j < num_process - i - 1; j++) {
-            if (processes[j].arrival_time > processes[j + 1].arrival_time) {
-                Process temp = processes[j];
-                processes[j] = processes[j + 1];
-                processes[j + 1] = temp;
-            }
-        }
-    }
-}
 
 int find_shortest_burst_process(Process processes[], int num_process, int current_time) {
     int shortestBurstProcessIndex = -1;

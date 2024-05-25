@@ -1,7 +1,7 @@
 // shortest remaining time first scheduling (pre-emptive version of SJF)
 
 #include <stdio.h>
-#define INT_MAX 999
+#define MAX_PROCESS_TIME 95
 
 typedef struct Process {
     int process_id;
@@ -37,8 +37,8 @@ void execute_processes(Process processes[], int num_process, int current_time) {
 
         printf("\n\nProcess\t\tBurst-time\tWaiting-time\tturnaround-time\n");
 
-        while(remaining_processes != 0 && current_time < INT_MAX) {
-            while((current_process_index != -1 && current_time < INT_MAX) || (remaining_processes == 1 && current_process_index == -1)) {
+        while(remaining_processes != 0 && current_time < MAX_PROCESS_TIME) {
+            while((current_process_index != -1 && current_time < MAX_PROCESS_TIME) || (remaining_processes == 1 && current_process_index == -1)) {
                 if(processes[current_process_index].burst_time > 0) {
                     processes[current_process_index].burst_time--;
                     processes[current_process_index].elapsed_time++;
@@ -51,9 +51,11 @@ void execute_processes(Process processes[], int num_process, int current_time) {
                     total_wait_time += wait_time;
                     wait_time += processes[previous_process_index].elapsed_time;
                     processed_count++;
+
                     if(processes[previous_process_index].burst_time <= 0) {
                         remaining_processes--;
                     }
+                    
                     processes[previous_process_index].elapsed_time = 0;
                 }
 
@@ -62,7 +64,7 @@ void execute_processes(Process processes[], int num_process, int current_time) {
                 current_process_index = find_shortest_burst_process(processes, num_process, current_time);
             }
 
-            while(current_process_index == -1 && current_time < INT_MAX) {
+            while(current_process_index == -1 && current_time < MAX_PROCESS_TIME) {
                 current_time++;
                 current_process_index = find_shortest_burst_process(processes, num_process, current_time);
             }
